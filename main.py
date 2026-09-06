@@ -74,14 +74,32 @@ class AridDB():
 
 
    
-    def editRow(self,data, index = None , primeryKey = None ):
-        pass
+    def editRow(self, data: list, index: int):
+        with open(f'{self.filename}.dbstuff', 'r') as f:
+            lines = f.readlines()
+
+        new_lines = []
+        found = False
+        for line in lines:
+            line_index, _ = line.split(',', 1)
+            if int(line_index) == index:
+                found = True
+                new_lines.append(f"{index},{data}\n")
+                continue
+            new_lines.append(line)
+
+        if not found:
+            return "index not found"
+
+        with open(f'{self.filename}.dbstuff', 'w') as f:
+            f.writelines(new_lines)
+
+        return "Row edited"
 
     #dumps DB
     def dumpDB(self):
         with open(f'{self.filename}.dbstuff', 'r') as f:
-            dump = f.read()
-            return dump
+            return f.read()
 
 
 
@@ -89,19 +107,20 @@ class AridKV():
     def __init__(self,filename = "database"):
         self.filename = filename
 
-    def addRedcord(self,filename, Data: dict):
-        print(filename,Data)
+    def addRecord(self, data: dict):
+        pass
 
-    def readRecord(self,filename,key):
-        print(filename,key)
+    def readRecord(self,index: int):
+        pass
+
+    def deleteRecord(self,index: int):
+        pass
 
 
 
 if __name__ == "__main__":
 
     database = AridDB("mydatabase")
-    database.addRow(["he;lljshdbcksdcbsd"])
-    
+    print(database.dumpDB())
 
-   
     
