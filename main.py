@@ -1,5 +1,6 @@
 
 import os
+from collections import deque
 
 class AridDB():
     
@@ -23,12 +24,19 @@ class AridDB():
         
     # index number generator
     def _indexer(self):
-        with open(f"{self.filename}.dbstuff", 'r') as fp:
-            line_count = sum(1 for line in fp)
-        return line_count  # next index = how many rows already exist 
+        with open(f'{self.filename}.dbstuff', 'r') as f:
+            # maxlen=1 ensures only the last line is kept in memory
+            last_lines = deque(f, maxlen=1)
+        if not last_lines:
+            return 0
+        last_line = last_lines.pop().strip()
+        #blank space
+        if not last_line:
+            return 0
+        return int(last_line[0]) + 1   
     
     # adds a row to the end of the document   
-    def addRow(self, data):
+    def addRow(self, data: list):
         with open(f'{self.filename}.dbstuff', 'a') as f:
             index = self._indexer()
             f.write(f"{index},{data}\n")
@@ -42,6 +50,27 @@ class AridDB():
                    return line[2:]
 
             return "index not found"
+
+    def deleteRow(self, index: int):
+        with open(f'{self.filename}.dbstuff', 'r') as f:
+            lines = f.readlines()
+
+        new_lines = []
+        found = False
+        for line in lines:
+            line_index, _ = line.split(',', 1)
+            if int(line_index) == index:
+                found = True
+                continue  # skip this line -> it's removed
+            new_lines.append(line)
+
+        if not found:
+            return "index not found"
+
+        with open(f'{self.filename}.dbstuff', 'w') as f:
+            f.writelines(new_lines)
+
+        return "Row deleted"
 
 
    
@@ -70,9 +99,9 @@ class AridKV():
 
 if __name__ == "__main__":
 
-    database = AridDB()
+    database = AridDB("mydatabase")
+    database.addRow(["he;lljshdbcksdcbsd"])
     
-    print(database.readRow(5))
-    print(database.dumpDB)
-    
+
+   
     
