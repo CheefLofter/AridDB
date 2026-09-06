@@ -1,4 +1,5 @@
 
+from ast import literal_eval
 import os
 from collections import deque
 
@@ -40,6 +41,7 @@ class AridDB():
         with open(f'{self.filename}.dbstuff', 'a') as f:
             index = self._indexer()
             f.write(f"{index},{data}\n")
+            return f'Row added with index {index}'
   
     # returns a row based on the index
     def readRow(self, index: int):
@@ -47,7 +49,7 @@ class AridDB():
             lines = f.readlines()
             for line in lines:
                 if int(line[0]) == index:
-                   return line[2:]
+                   return literal_eval(line[2:])
 
             return "index not found"
 
@@ -121,6 +123,6 @@ class AridKV():
 if __name__ == "__main__":
 
     database = AridDB("mydatabase")
-    print(database.dumpDB())
+    print(database.readRow(0)[0])
 
     
