@@ -105,19 +105,6 @@ class AridDB():
 
 
 
-class AridKV():
-    def __init__(self,filename = "database"):
-        self.filename = filename
-
-    def addRecord(self, data: dict):
-        pass
-
-    def readRecord(self,index: int):
-        pass
-
-    def deleteRecord(self,index: int):
-        pass
-
 
 
 if __name__ == "__main__":
