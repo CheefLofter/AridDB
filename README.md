@@ -97,8 +97,10 @@ It will also check for existing files and will use them if posible
 | Method | Description | 
 |--------|-------------|
 | `addRecord(filename, data)` | Store a key-value pair | 
-| `readRecord(filename, key)` | Retrieve a value by key | 
-
+| `readRecord(filename, index)` | Retrieve a value by index | 
+| `deleteRecord(filename,index)` | deletes a record at index |
+| `editRecord(filename,index,data)` | edits a record at given index |
+| `dumpRecords()` | dumps full kvstore as a string |
 
 
 
