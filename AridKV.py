@@ -43,20 +43,73 @@ class AridKV():
         with open(f'{self.filename}.kvstuff', 'a') as f:
             index = self._indexer()
             f.write(f"{index},{data}\n")
-            return f'Row added with index {index}'
+            return f'Record added with index {index}'
 
-    def readRecord(self,index: int):
-        pass
+    def readRecord(self,index: int) -> dict:
+       with open(f'{self.filename}.kvstuff', 'r') as f:
+            lines = f.readlines()
+            for line in lines:
+                if int(line[0]) == index:
+                   return literal_eval(line[2:])
+
+            return "index not found"
 
     def deleteRecord(self,index: int):
-        pass
+        with open(f'{self.filename}.kvstuff', 'r') as f:
+            lines = f.readlines()
+
+        new_lines = []
+        found = False
+        for line in lines:
+            line_index, _ = line.split(',', 1)
+            if int(line_index) == index:
+                found = True
+                continue  # skip this line -> it's removed
+            new_lines.append(line)
+
+        if not found:
+            return "index not found"
+
+        with open(f'{self.filename}.kvstuff', 'w') as f:
+            f.writelines(new_lines)
+
+        return "Record deleted"
 
 
+
+    def editRecord(self,index:int,data:dict):
+        with open(f'{self.filename}.kvstuff', 'r') as f:
+            lines = f.readlines()
+
+        new_lines = []
+        found = False
+        for line in lines:
+            line_index, _ = line.split(',', 1)
+            if int(line_index) == index:
+                found = True
+                new_lines.append(f"{index},{data}\n")
+                continue
+            new_lines.append(line)
+
+        if not found:
+            return "index not found"
+
+        with open(f'{self.filename}.kvstuff', 'w') as f:
+            f.writelines(new_lines)
+
+        return "Record edited"
+
+
+    def dumpRecords(self):
+        with open(f'{self.filename}.kvstuff', 'r') as f:
+            return f.read()
+        
 
 
 
 if __name__ == "__main__":
     kv = AridKV()
-    print(kv.addRecord({"name": "John", "age": 30}))
+    print(kv.dumpRecords())
+  
 
 

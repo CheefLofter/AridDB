@@ -57,75 +57,53 @@ git clone https://github.com/CheefLofter/AridDB.git
 
 ## 🚀 Quick Start
 
+
 ```python
 from ariddb import AridDB
+#from aridkv import AridKV
 
 # Create or open a database
-db = AridDB("mydata")
+db = AridDB("database") # can be left blank
+#kv = AridKV("kvstore")
 
 # Add a row — the index is auto-generated
-index = db.addRow({"name": "Alice", "age": 30})
+db.addRow(["Alice",30])
+# kv.addRecord({"name": "Alice", "age": 30})
 
 # Read it back
 row = db.readRow(index)
 print(row)
+
+
 ```
+
+Initializing a database or a kvstore will create a .dbsuff/.kvstuff file in the same directory 
+It will also check for existing files and will use them if posible 
 
 ## 📘 API Reference
 
 ### `AridDB`
 
-| Method | Description | Status |
-|--------|-------------|:------:|
-| `__init__(filename)` | Initialize or open a database | ✅ |
-| `addRow(data)` | Add a new row with an auto-generated index | ✅ |
-| `readRow(index)` | Read a single row by its index | ✅ |
-| `dumpDB()` | Dump the contents of the database | ⚠️ Known issue |
-| `editRow(data, index, primaryKey)` | Edit an existing row | ❌ Not implemented |
-| `_dbExists()` | Check whether the database file exists | 🔒 Internal |
-| `_indexer()` | Get the next available index | 🔒 Internal |
+| Method | Description |
+|--------|-------------|
+| `addRow(data)` | Add a new row with an auto-generated index | 
+| `readRow(index)` | Read a single row by its index | 
+| `dumpDB()` | Dump the contents of the database | 
+| `editRow(data, index, primaryKey)` | Edit an existing row | 
+
 
 ### `AridKV` — Key-Value Store
 
-| Method | Description | Status |
-|--------|-------------|:------:|
-| `addRecord(filename, data)` | Store a key-value pair | ❌ Not implemented |
-| `readRecord(filename, key)` | Retrieve a value by key | ❌ Not implemented |
+| Method | Description | 
+|--------|-------------|
+| `addRecord(filename, data)` | Store a key-value pair | 
+| `readRecord(filename, key)` | Retrieve a value by key | 
 
-**Legend:** ✅ Working · ⚠️ Known issues · ❌ Not implemented · 🔒 Internal use
 
-## 🗺️ Roadmap
 
-- [ ] Fix `dumpDB()`
-- [ ] Implement `editRow()`
-- [ ] Complete the `AridKV` implementation
-- [ ] Add error handling and input validation
-- [ ] Add unit tests
-- [ ] Publish to PyPI
-
-## 🤝 Contributing
-
-AridDB is an early-stage project and contributions are welcome! Feel free to
-open an [issue](https://github.com/CheefLofter/AridDB/issues) to report bugs or
-suggest features, or submit a
-[pull request](https://github.com/CheefLofter/AridDB/pulls).
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
 
 ## 📄 License
 
 Distributed under the [MIT License](LICENSE). See `LICENSE` for more information.
 
----
 
-<div align="center">
-
-Made with ❤️ by [CheefLofter](https://github.com/CheefLofter)
-
-⭐ Star this repo if you find it useful!
-
-</div>
