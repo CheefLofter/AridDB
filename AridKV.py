@@ -39,6 +39,7 @@ class AridKV():
 
      
     def addRecord(self, data: dict):
+    
         with open(f'{self.filename}.kvstuff', 'a') as f:
             index = self._indexer()
             f.write(f"{index},{data}\n")
