@@ -1,7 +1,9 @@
 
 <div align="center">
 
-# AridDB
+<img src="Assets/banner.png" style="width:500px;max-width:100%;height:auto;" alt="banner">
+
+
 
 _A lightweight, embeddable, file-based database for Python — no SQL, no server, no setup._
 
