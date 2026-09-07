@@ -88,6 +88,7 @@ It will also check for existing files and will use them if posible
 |--------|-------------|
 | `addRow(data)` | Add a new row with an auto-generated index | 
 | `readRow(index)` | Read a single row by its index | 
+| `deleteRow(index)` | deletes the row at the given index |
 | `dumpDB()` | Dump the contents of the database | 
 | `editRow(data, index, primaryKey)` | Edit an existing row | 
 
