@@ -42,6 +42,14 @@ class AridDB():
             index = self._indexer()
             f.write(f"{index},{data}\n")
             return f'Row added with index {index}'
+
+    #adds multiple rows (accepts a array of lists)
+    def addRows(self,data:list):
+        for row in data:
+            if type(row) is not list:
+                return "Invalid data format. Each row should be a list."
+            self.addRow(row)
+        return f'rows added'
   
     # returns a row based on the index
     def readRow(self, index: int):
@@ -110,6 +118,6 @@ class AridDB():
 if __name__ == "__main__":
 
     database = AridDB("mydatabase")
-    print(database.readRow(0)[0])
+    print(database.addRows([[1, 2, 3], [4, 5, 6], [7, 8, 9]]))
 
     
