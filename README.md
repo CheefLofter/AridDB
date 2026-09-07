@@ -86,7 +86,8 @@ It will also check for existing files and will use them if posible
 
 | Method | Description |
 |--------|-------------|
-| `addRow(data)` | Add a new row with an auto-generated index | 
+| `addRow(data)` | Add a new row with an auto-generated index |
+| `addRows(data)` | addes multiple rows from an array(lsit) of data |
 | `readRow(index)` | Read a single row by its index | 
 | `deleteRow(index)` | deletes the row at the given index |
 | `dumpDB()` | Dump the contents of the database | 
