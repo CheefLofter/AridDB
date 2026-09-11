@@ -1,3 +1,4 @@
 *.dbstuff
 *.kvstuff
 testersstufff/*
+.venv/
