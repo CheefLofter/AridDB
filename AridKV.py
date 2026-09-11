@@ -11,13 +11,13 @@ class AridKV():
             print("kvstore already exists")
         else:
             print("Creating new kvstore")
-            newDB = open(f"{self.filename}.kvstuff", "w")
+            newDB = open(f"{self.filename}.kvstf", "w")
             newDB.close()
 
         
     # checks if the db already exixts
     def _kvExists(self):
-        if os.path.exists(f"{self.filename}.kvstuff"):
+        if os.path.exists(f"{self.filename}.kvstf"):
             return True
         else:
             return False
@@ -25,7 +25,7 @@ class AridKV():
         
     # index number generator
     def _indexer(self):
-        with open(f'{self.filename}.kvstuff', 'r') as f:
+        with open(f'{self.filename}.kvstf', 'r') as f:
             # maxlen=1 ensures only the last line is kept in memory
             last_lines = deque(f, maxlen=1)
         if not last_lines:
@@ -40,13 +40,13 @@ class AridKV():
      
     def addRecord(self, data: dict):
     
-        with open(f'{self.filename}.kvstuff', 'a') as f:
+        with open(f'{self.filename}.kvstf', 'a') as f:
             index = self._indexer()
             f.write(f"{index},{data}\n")
             return f'Record added with index {index}'
 
     def readRecord(self,index: int) -> dict:
-       with open(f'{self.filename}.kvstuff', 'r') as f:
+       with open(f'{self.filename}.kvstf', 'r') as f:
             lines = f.readlines()
             for line in lines:
                 if int(line[0]) == index:
@@ -55,7 +55,7 @@ class AridKV():
             return "index not found"
 
     def deleteRecord(self,index: int):
-        with open(f'{self.filename}.kvstuff', 'r') as f:
+        with open(f'{self.filename}.kvstf', 'r') as f:
             lines = f.readlines()
 
         new_lines = []
@@ -70,7 +70,7 @@ class AridKV():
         if not found:
             return "index not found"
 
-        with open(f'{self.filename}.kvstuff', 'w') as f:
+        with open(f'{self.filename}.kvstf', 'w') as f:
             f.writelines(new_lines)
 
         return "Record deleted"
@@ -78,7 +78,7 @@ class AridKV():
 
 
     def editRecord(self,index:int,data:dict):
-        with open(f'{self.filename}.kvstuff', 'r') as f:
+        with open(f'{self.filename}.kvstf', 'r') as f:
             lines = f.readlines()
 
         new_lines = []
@@ -94,14 +94,14 @@ class AridKV():
         if not found:
             return "index not found"
 
-        with open(f'{self.filename}.kvstuff', 'w') as f:
+        with open(f'{self.filename}.kvstf', 'w') as f:
             f.writelines(new_lines)
 
         return "Record edited"
 
 
     def dumpRecords(self):
-        with open(f'{self.filename}.kvstuff', 'r') as f:
+        with open(f'{self.filename}.kvstf', 'r') as f:
             return f.read()
         
 
