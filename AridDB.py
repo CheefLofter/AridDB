@@ -11,13 +11,13 @@ class AridDB():
             print("Database already exists")
         else:
             print("Creating new database")
-            newDB = open(f"{self.filename}.dbstuff", "w")
+            newDB = open(f"{self.filename}.dbstf", "w")
             newDB.close()
 
         
     # checks if the db already exixts
     def _dbExists(self):
-        if os.path.exists(f"{self.filename}.dbstuff"):
+        if os.path.exists(f"{self.filename}.dbstf"):
             return True
         else:
             return False
@@ -25,7 +25,7 @@ class AridDB():
         
     # index number generator
     def _indexer(self):
-        with open(f'{self.filename}.dbstuff', 'r') as f:
+        with open(f'{self.filename}.dbstf', 'r') as f:
             # maxlen=1 ensures only the last line is kept in memory
             last_lines = deque(f, maxlen=1)
         if not last_lines:
@@ -38,7 +38,7 @@ class AridDB():
     
     # adds a row to the end of the document   
     def addRow(self, data: list):
-        with open(f'{self.filename}.dbstuff', 'a') as f:
+        with open(f'{self.filename}.dbstf', 'a') as f:
             index = self._indexer()
             f.write(f"{index},{data}\n")
             return f'Row added with index {index}'
@@ -53,7 +53,7 @@ class AridDB():
   
     # returns a row based on the index
     def readRow(self, index: int):
-       with open(f'{self.filename}.dbstuff', 'r') as f:
+       with open(f'{self.filename}.dbstf', 'r') as f:
             lines = f.readlines()
             for line in lines:
                 if int(line[0]) == index:
@@ -62,7 +62,7 @@ class AridDB():
             return "index not found"
 
     def deleteRow(self, index: int):
-        with open(f'{self.filename}.dbstuff', 'r') as f:
+        with open(f'{self.filename}.dbstf', 'r') as f:
             lines = f.readlines()
 
         new_lines = []
@@ -77,7 +77,7 @@ class AridDB():
         if not found:
             return "index not found"
 
-        with open(f'{self.filename}.dbstuff', 'w') as f:
+        with open(f'{self.filename}.dbstf', 'w') as f:
             f.writelines(new_lines)
 
         return "Row deleted"
@@ -85,7 +85,7 @@ class AridDB():
 
    
     def editRow(self, data: list, index: int):
-        with open(f'{self.filename}.dbstuff', 'r') as f:
+        with open(f'{self.filename}.dbstf', 'r') as f:
             lines = f.readlines()
 
         new_lines = []
@@ -101,14 +101,14 @@ class AridDB():
         if not found:
             return "index not found"
 
-        with open(f'{self.filename}.dbstuff', 'w') as f:
+        with open(f'{self.filename}.dbstf', 'w') as f:
             f.writelines(new_lines)
 
         return "Row edited"
 
     #dumps DB
     def dumpDB(self):
-        with open(f'{self.filename}.dbstuff', 'r') as f:
+        with open(f'{self.filename}.dbstf', 'r') as f:
             return f.read()
 
 
