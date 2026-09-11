@@ -1,8 +1,57 @@
 {% extends "base.html" %}
 
-{% block title %}Home | AridDB{% endblock %}
+{% block title %}AridDB | Simple local data{% endblock %}
 
 {% block body %}
-<h1>Welcome to AridDB</h1>
-<p class="lead">Your Flask application is ready.</p>
+<section class="hero" aria-labelledby="hero-title">
+	<div>
+		<div class="eyebrow">Python database </div>
+		
+		<p class="hero-copy">AridDB is a lightweight, file-based database and key-value store. It is a college project built to explore how data can be saved and read with simple Python classes.</p>
+		<div class="actions">
+			<a class="button button-primary" href="{{ url_for('docs') }}">See how it works <span aria-hidden="true">&nbsp;→</span></a>
+			<a class="button button-secondary" href="https://github.com/CheefLofter/AridDB">View the code</a>
+		</div>
+	</div>
+
+	<div class="preview-window" aria-label="AridDB interface preview">
+		<div class="window-bar" aria-hidden="true">
+			<span class="window-dot"></span><span class="window-dot"></span><span class="window-dot"></span>
+		</div>
+		<div class="window-body">
+			<div class="window-tabs">
+				<div class="window-tab active">Database.dbstf</div>
+				<div class="window-tab">KVStore.kvstf</div>
+			</div>
+			<img class="window-logo" src="{{ url_for('asset_file', filename='AridDB-logo.svg') }}" alt="AridDB logo">
+		</div>
+	</div>
+</section>
+
+<section class="section" aria-labelledby="features-title">
+	<div class="section-heading">
+		<div>
+			<div class="section-kicker">Why AridDB</div>
+			<h2 id="features-title">Small surface. Solid utility.</h2>
+		</div>
+		<p>Everything you need for local data, kept close to the Python objects you already use.</p>
+	</div>
+	<div class="feature-grid">
+		<article class="feature-card">
+			<div class="feature-icon">01</div>
+				<h3>Made for small projects</h3>
+				<p>Keep the database inside the project folder. There is no server process or separate service to maintain.</p>
+		</article>
+		<article class="feature-card">
+			<div class="feature-icon">02</div>
+				<h3>Easy to inspect</h3>
+				<p>Data is saved in local files, which makes it easy to open, move, and understand while learning.</p>
+		</article>
+		<article class="feature-card">
+			<div class="feature-icon">03</div>
+				<h3>Two simple classes</h3>
+			<p>Use AridDB for rows and AridKV for key-value records, with straightforward Python methods.</p>
+		</article>
+	</div>
+</section>
 {% endblock %}

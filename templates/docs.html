@@ -1,8 +1,50 @@
 {% extends "base.html" %}
 
-{% block title %}Home | AridDB{% endblock %}
+{% block title %}Docs | AridDB{% endblock %}
 
 {% block body %}
-<h1>Welcome to AridDB</h1>
-<p class="lead">Your Flask application is ready.</p>
+<header class="docs-header">
+	<div class="section-kicker">Documentation</div>
+	<h1>Notes from the project.</h1>
+	<p>These examples show the basic idea behind AridDB: create a local file, save some data, and read it back with familiar Python methods.</p>
+</header>
+
+<div class="docs-layout">
+	<aside class="docs-sidebar" aria-label="Documentation sections">
+		<a class="active" href="#quick-start">Quick start</a>
+		<a href="#database">AridDB</a>
+		<a href="#key-value">AridKV</a>
+	</aside>
+
+	<div>
+		<section class="doc-card" id="quick-start">
+			<h2>Quick start</h2>
+			<p>Install the source in your project, then create a database by giving it a filename. The local file is created automatically when it does not exist.</p>
+			<pre class="code-block"><code>from AridDB import AridDB
+
+db = AridDB("database")
+db.addRow(["Alice", 30])
+print(db.readRow(0))</code></pre>
+		</section>
+
+		<section class="doc-card" id="database">
+			<h2>AridDB</h2>
+			<p>Use row-based storage for simple, ordered records. Each new row receives an index automatically.</p>
+			<pre class="code-block"><code>db.addRows([["Alice", 30], ["Sam", 28]])
+db.editRow(["Alice", 31], 0)
+db.deleteRow(1)
+db.dumpDB()</code></pre>
+		</section>
+
+		<section class="doc-card" id="key-value">
+			<h2>AridKV</h2>
+			<p>Use the companion key-value store when your records are naturally represented as dictionaries.</p>
+			<pre class="code-block"><code>from AridKV import AridKV
+
+store = AridKV("kvstore")
+store.addRecord({"theme": "pink"})
+store.readRecord(0)</code></pre>
+		</section>
+	</div>
+</div>
 {% endblock %}
