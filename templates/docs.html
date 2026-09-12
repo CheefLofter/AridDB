@@ -3,43 +3,43 @@
 {% block title %}Docs | AridDB{% endblock %}
 
 {% block body %}
-<header class="docs-header">
-	<div class="section-kicker">Documentation</div>
-	<h1>Notes from the project.</h1>
-	<p>These examples show the basic idea behind AridDB: create a local file, save some data, and read it back with familiar Python methods.</p>
+<header class="mb-10 max-w-2xl">
+	<div class="text-xs font-medium uppercase tracking-widest text-pink-800">Documentation</div>
+	<h1 class="mt-2 text-4xl font-bold tracking-tight md:text-5xl">Notes from the project.</h1>
+	<p class="text-lg leading-relaxed text-slate-500">These examples show the basic idea behind AridDB: create a local file, save some data, and read it back with familiar Python methods.</p>
 </header>
 
-<div class="docs-layout">
-	<aside class="docs-sidebar" aria-label="Documentation sections">
-		<a class="active" href="#quick-start">Quick start</a>
-		<a href="#database">AridDB</a>
-		<a href="#key-value">AridKV</a>
+<div class="grid grid-cols-1 items-start gap-10 md:grid-cols-4">
+	<aside class="mb-3 flex gap-2 overflow-x-auto border-b-2 border-gray-200 pb-3 md:col-span-1 md:mb-0 md:sticky md:top-6 md:flex-col md:overflow-visible md:border-b-0 md:border-l-4 md:border-pink-600 md:pb-0 md:pl-4" aria-label="Documentation sections">
+		<a class="block whitespace-nowrap rounded-md bg-pink-50 px-3 py-2 text-sm font-bold text-pink-800" href="#quick-start">Quick start</a>
+		<a class="block whitespace-nowrap rounded-md px-3 py-2 text-sm font-bold text-slate-500 hover:bg-pink-50 hover:text-pink-800" href="#database">AridDB</a>
+		<a class="block whitespace-nowrap rounded-md px-3 py-2 text-sm font-bold text-slate-500 hover:bg-pink-50 hover:text-pink-800" href="#key-value">AridKV</a>
 	</aside>
 
-	<div>
-		<section class="doc-card" id="quick-start">
-			<h2>Quick start</h2>
-			<p>Install the source in your project, then create a database by giving it a filename. The local file is created automatically when it does not exist.</p>
-			<pre class="code-block"><code>from AridDB import AridDB
+	<div class="md:col-span-3">
+		<section class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm" id="quick-start">
+			<h2 class="mb-3 text-2xl font-bold">Quick start</h2>
+			<p class="leading-relaxed text-slate-500">Install the source in your project, then create a database by giving it a filename. The local file is created automatically when it does not exist.</p>
+			<pre class="mt-4 overflow-x-auto rounded-lg border-2 border-slate-800 bg-slate-800 p-5 text-sm leading-relaxed text-pink-50"><code>from AridDB import AridDB
 
 db = AridDB("database")
 db.addRow(["Alice", 30])
 print(db.readRow(0))</code></pre>
 		</section>
 
-		<section class="doc-card" id="database">
-			<h2>AridDB</h2>
-			<p>Use row-based storage for simple, ordered records. Each new row receives an index automatically.</p>
-			<pre class="code-block"><code>db.addRows([["Alice", 30], ["Sam", 28]])
+		<section class="mt-4 rounded-xl border border-gray-200 bg-white p-6 shadow-sm" id="database">
+			<h2 class="mb-3 text-2xl font-bold">AridDB</h2>
+			<p class="leading-relaxed text-slate-500">Use row-based storage for simple, ordered records. Each new row receives an index automatically.</p>
+			<pre class="mt-4 overflow-x-auto rounded-lg border-2 border-slate-800 bg-slate-800 p-5 text-sm leading-relaxed text-pink-50"><code>db.addRows([["Alice", 30], ["Sam", 28]])
 db.editRow(["Alice", 31], 0)
 db.deleteRow(1)
 db.dumpDB()</code></pre>
 		</section>
 
-		<section class="doc-card" id="key-value">
-			<h2>AridKV</h2>
-			<p>Use the companion key-value store when your records are naturally represented as dictionaries.</p>
-			<pre class="code-block"><code>from AridKV import AridKV
+		<section class="mt-4 rounded-xl border border-gray-200 bg-white p-6 shadow-sm" id="key-value">
+			<h2 class="mb-3 text-2xl font-bold">AridKV</h2>
+			<p class="leading-relaxed text-slate-500">Use the companion key-value store when your records are naturally represented as dictionaries.</p>
+			<pre class="mt-4 overflow-x-auto rounded-lg border-2 border-slate-800 bg-slate-800 p-5 text-sm leading-relaxed text-pink-50"><code>from AridKV import AridKV
 
 store = AridKV("kvstore")
 store.addRecord({"theme": "pink"})

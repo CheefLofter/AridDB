@@ -4,34 +4,32 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>{% block title %}AridDB{% endblock %}</title>
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Nunito+Sans:wght@400;600;700;800&family=Roboto+Slab:wght@500;700&display=swap" rel="stylesheet">
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/all-tailwind-classes-full-min.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/fonts.css') }}">
 	{% block head %}{% endblock %}
 </head>
-<body>
-	<header class="site-header">
-		<nav class="nav-shell" aria-label="Main navigation">
-			<a class="brand" href="{{ url_for('hello_world') }}" aria-label="AridDB home">
-				<img src="{{ url_for('asset_file', filename='AridDB-logo.svg') }}" alt="AridDB">
+<body class="min-w-0 bg-white text-slate-800 antialiased">
+	<header class="border-b-2 border-slate-800 bg-white">
+		<nav class="mx-auto flex min-h-20 w-full max-w-6xl items-center justify-between gap-7 px-5" aria-label="Main navigation">
+			<a class="block leading-none" href="{{ url_for('hello_world') }}" aria-label="AridDB home">
+				<img class="block w-32" src="{{ url_for('asset_file', filename='AridDB-logo.svg') }}" alt="AridDB">
 			</a>
-			<div class="nav-links">
+			<div class="flex items-center gap-2">
 				{% block tabs %}
-				<a class="nav-link {% if request.endpoint == 'hello_world' %}active{% endif %}" href="{{ url_for('hello_world') }}">Home</a>
-				<a class="nav-link {% if request.endpoint == 'docs' %}active{% endif %}" href="{{ url_for('docs') }}">Documentation</a>
-				<a class="nav-link external" href="https://github.com/CheefLofter/AridDB">Source code</a>
+				<a class="rounded-lg border border-transparent px-3 py-2 text-sm font-bold text-slate-500 hover:border-pink-200 hover:bg-pink-50 hover:text-pink-800 {% if request.endpoint == 'hello_world' %}border-pink-200 bg-pink-50 text-pink-800{% endif %}" href="{{ url_for('hello_world') }}">Home</a>
+				<a class="rounded-lg border border-transparent px-3 py-2 text-sm font-bold text-slate-500 hover:border-pink-200 hover:bg-pink-50 hover:text-pink-800 {% if request.endpoint == 'docs' %}border-pink-200 bg-pink-50 text-pink-800{% endif %}" href="{{ url_for('docs') }}">Documentation</a>
+				<a class="rounded-lg border border-transparent px-3 py-2 text-sm font-bold text-slate-500 hover:border-pink-200 hover:bg-pink-50 hover:text-pink-800" href="https://github.com/CheefLofter/AridDB">Source code <span class="ml-1 text-pink-600" aria-hidden="true">&#8599;</span></a>
 				{% endblock %}
 			</div>
 		</nav>
 	</header>
 
-	<main class="page-shell">
+	<main class="mx-auto w-full max-w-6xl px-5 py-16 pb-20">
 		{% block body %}{% endblock %}
 	</main>
 
-	<footer class="site-footer">
-		<span>AridDB · a small database project for Python.</span>
+	<footer class="mx-auto flex w-full max-w-6xl justify-between border-t border-gray-200 px-5 py-6 pb-8 text-sm text-slate-500">
+		<span>AridDB &middot; a small database project for Python.</span>
 		<span>Made as a college project.</span>
 	</footer>
 	{% block scripts %}{% endblock %}
