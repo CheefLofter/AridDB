@@ -2,3 +2,37 @@
 *.kvstuff
 testersstufff/*
 .venv/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Flask and local configuration
+.env
+.env.*
+!.env.example
+instance/
+flask_session/
+
+# Testing and coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# Type checkers and linters
+.mypy_cache/
+.pyright/
+.ruff_cache/
+
+# Packaging and build output
+build/
+dist/
+*.egg-info/
+
+# Logs and local tooling
+*.log
+.python-version
+.vscode/
+.idea/
