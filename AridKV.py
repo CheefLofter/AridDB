@@ -99,6 +99,19 @@ class AridKV():
 
         return "Record edited"
 
+    def readByKey(self,key:str):
+        with open(f'{self.filename}.kvstf', 'r') as f:
+            lines = f.readlines()
+            for line in lines:
+                ext_dict = literal_eval(line.split(",",1)[1]) # makes dictionary from the string
+                if key in ext_dict:
+                #print(literal_eval(line.split(",")[1])[key])
+                    
+                    return ext_dict[key]
+            
+            return "key not found"
+
+
 
     def dumpRecords(self):
         with open(f'{self.filename}.kvstf', 'r') as f:
@@ -109,7 +122,8 @@ class AridKV():
 
 if __name__ == "__main__":
     kv = AridKV()
-    print(kv.dumpRecords())
+    print(kv.readByKey("ahs"))
+    
   
 
 
