@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Docs | AridDB</title>
+    <link rel="stylesheet" href="../static/css/all-tailwind-classes-full-min.css">
+    <link rel="stylesheet" href="../static/css/fonts.css">
+    <style>html { scroll-behavior: smooth; }</style><!-- optional, remove if unwanted -->
+</head>
+<body class="min-w-0 bg-white text-slate-800 antialiased">
+    <header class="border-b-2 border-slate-800 bg-white">
+        <nav class="mx-auto flex min-h-20 w-full max-w-6xl items-center justify-between gap-7 px-5" aria-label="Main navigation">
+            <a class="block leading-none" href="../index.html" aria-label="AridDB home">
+                <img class="block w-32" src="../Assets/AridDB-logo.svg" alt="AridDB">
+            </a>
+            <div class="flex items-center gap-2">
+                <a class="rounded-lg border border-transparent px-3 py-2 text-sm font-bold text-slate-500 hover:border-pink-200 hover:bg-pink-50 hover:text-pink-800" href="../index.html">Home</a>
+                <a class="rounded-lg border border-transparent px-3 py-2 text-sm font-bold text-slate-500 hover:border-pink-200 hover:bg-pink-50 hover:text-pink-800 border-pink-200 bg-pink-50 text-pink-800" href="docs.html">Documentation</a>
+                <a class="rounded-lg border border-transparent px-3 py-2 text-sm font-bold text-slate-500 hover:border-pink-200 hover:bg-pink-50 hover:text-pink-800" href="https://github.com/CheefLofter/AridDB">Source code <span class="ml-1 text-pink-600" aria-hidden="true">&#8599;</span></a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="mx-auto w-full max-w-6xl px-5 py-16 pb-20">
+        <md-docs src="docs.md"></md-docs>
+    </main>
+
+    <footer class="mx-auto flex w-full max-w-6xl justify-between border-t border-gray-200 px-5 py-6 pb-8 text-sm text-slate-500">
+        <span>AridDB &middot; a small database project for Python.</span>
+        <span>Made as a college project.</span>
+    </footer>
+
+    <section class="mx-auto mb-8 w-full max-w-6xl rounded-xl border border-amber-200 bg-amber-50 px-5 py-5 text-sm text-slate-700" aria-labelledby="local-setup-title">
+        <h2 class="mb-2 text-base font-bold text-slate-800" id="local-setup-title">Running the documentation locally</h2>
+        <p class="max-w-3xl leading-relaxed">
+            This page loads its content from <code class="rounded bg-white px-1.5 py-0.5 font-mono text-xs text-pink-800">docs.md</code>,
+            so it may not load when you open the HTML file directly in a browser. Start a local server from the project folder instead.
+        </p>
+        <div class="mt-4 grid gap-4 md:grid-cols-2">
+            <div>
+                <h3 class="mb-2 font-bold text-slate-800">Linux / macOS</h3>
+                <pre class="overflow-x-auto rounded-lg border border-amber-200 bg-white px-4 py-3 font-mono text-xs text-slate-700"><code>python3 -m http.server 8000</code></pre>
+            </div>
+            <div>
+                <h3 class="mb-2 font-bold text-slate-800">Windows</h3>
+                <pre class="overflow-x-auto rounded-lg border border-amber-200 bg-white px-4 py-3 font-mono text-xs text-slate-700"><code>py -m http.server 8000</code></pre>
+            </div>
+        </div>
+        <p class="mt-4 leading-relaxed">
+            Then open <code class="rounded bg-white px-1.5 py-0.5 font-mono text-xs text-pink-800">http://localhost:8000/docs/docs.html</code> in your browser.
+        </p>
+    </section>
+
+    <script>
+    /*!
+     * <md-docs src="file.md"> — self-contained docs renderer.
+     * Rule: every "# " heading (h1) in the md file becomes one sidebar
+     * button and one card. Everything else renders inside the current card.
+     */
+    (function () {
+        'use strict';
+        if (!window.customElements) return;
+
+        /* Class strings copied 1:1 from the original page — design unchanged. */
+        var C = {
+            header: 'mb-10 max-w-2xl',
+            eyebrow: 'text-xs font-medium uppercase tracking-widest text-pink-800',
+            title: 'mt-2 text-4xl font-bold tracking-tight md:text-5xl',
+            description: 'text-lg leading-relaxed text-slate-500',
+
+            grid: 'grid grid-cols-1 items-start gap-10 md:grid-cols-4',
+            aside: 'mb-3 flex gap-2 overflow-x-auto border-b-2 border-gray-200 pb-3 md:col-span-1 md:mb-0 md:sticky md:top-6 md:flex-col md:overflow-visible md:border-b-0 md:border-l-4 md:border-pink-600 md:pb-0 md:pl-4',
+            content: 'md:col-span-3',
+
+            card: 'mt-4 rounded-xl border border-gray-200 bg-white p-6 shadow-sm',
+
+            button: 'block whitespace-nowrap rounded-md px-3 py-2 text-sm font-bold text-slate-500 hover:bg-pink-50 hover:text-pink-800',
+            active: ['bg-pink-50', 'text-pink-800'],
+
+            p: 'leading-relaxed text-slate-500',
+            ul: 'list-disc list-inside leading-relaxed text-slate-500',
+            ol: 'list-decimal list-inside leading-relaxed text-slate-500',
+            li: 'mt-1',
+            strong: 'font-bold text-slate-800',
+            blockquote: 'mt-4 border-l-4 border-pink-300 bg-pink-50 px-4 py-3 text-sm text-slate-600',
+            a: 'font-semibold text-pink-700 underline decoration-pink-300 underline-offset-2 hover:text-pink-900',
+            codeInline: ['rounded', 'bg-pink-50', 'px-1.5', 'py-0.5', 'font-mono', 'text-xs', 'text-pink-800'],
+            pre: 'mt-4 overflow-x-auto rounded-lg border-2 border-slate-800 bg-slate-800 p-5 text-sm leading-relaxed text-pink-50',
+            tableWrap: 'mt-4 overflow-x-auto rounded-lg border border-gray-200',
+            table: 'w-full min-w-full text-left text-sm',
+            thead: 'bg-pink-50',
+            th: 'px-4 py-3 font-bold text-slate-800',
+            td: 'px-4 py-3 align-top text-slate-500 border-t border-gray-100',
+            hr: 'my-6 border-t border-gray-200',
+            img: 'rounded-lg'
+        };
+
+        /* Heading level -> classes (h2 gets the "sub-section" divider look) */
+        var H = {
+            1: 'mb-3 text-3xl font-bold tracking-tight',
+            2: 'mt-6 mb-3 border-t border-gray-100 pt-6 text-xl font-bold',
+            3: 'mt-6 mb-3 border-t border-gray-100 pt-6 text-lg font-bold',
+            4: 'mt-6 mb-2 text-lg font-bold',
+            5: 'mt-6 mb-2 text-base font-bold',
+            6: 'mt-6 mb-2 text-sm font-bold uppercase tracking-widest'
+        };
+
+        function addClasses(el, classes) {
+            (classes || '').split(/\s+/).forEach(function (c) { if (c) el.classList.add(c); });
+        }
+
+        /* ---------------- tiny markdown parser (no libraries, offline) ------- */
+
+        function esc(s) {
+            return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        function inline(s) {
+            s = esc(s);
+            var codes = [];
+            s = s.replace(/`([^`]+)`/g, function (_, c) { codes.push(c); return '\x00' + (codes.length - 1) + '\x00'; });
+            s = s.replace(/!\[([^\]]*)\]\(([^)\s]+)\)/g, '<img src="$2" alt="$1">');
+            s = s.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, '<a href="$2">$1</a>');
+            s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+            s = s.replace(/__([^_]+)__/g, '<strong>$1</strong>');
+            s = s.replace(/(^|[^*\w])\*([^*\s][^*]*)\*/g, '$1<em>$2</em>');
+            s = s.replace(/(^|[^_\w])_([^_\s][^_]*)_/g, '$1<em>$2</em>');
+            s = s.replace(/\x00(\d+)\x00/g, function (_, n) { return '<code>' + codes[n] + '</code>'; });
+            return s;
+        }
+
+        function parseFrontMatter(src) {
+            var m = /^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/.exec(src);
+            if (!m) return { meta: {}, body: src };
+            var meta = {};
+            m[1].split(/\r?\n/).forEach(function (line) {
+                var i = line.indexOf(':');
+                if (i === -1) return;
+                var k = line.slice(0, i).trim(), v = line.slice(i + 1).trim().replace(/^["']|["']$/g, '');
+                if (k) meta[k] = v;
+            });
+            return { meta: meta, body: src.slice(m[0].length) };
+        }
+
+        function mdToHtml(src) {
+            var lines = src.replace(/\r\n?/g, '\n').split('\n');
+            var out = [], i = 0;
+
+            var isBlank = function (s) { return !s.trim(); };
+            var isFence = function (s) { return /^\s*```/.test(s); };
+            var isQuote = function (s) { return /^\s*>\s?/.test(s); };
+            var isHr = function (s) { return /^\s*(?:-{3,}|\*{3,}|_{3,})\s*$/.test(s); };
+            var isUl = function (s) { return /^\s*[-*+]\s+/.test(s); };
+            var isOl = function (s) { return /^\s*\d+[.)]\s+/.test(s); };
+            var isHeading = function (s) { return /^\s*#{1,6}\s+/.test(s); };
+            var cells = function (s) { return s.trim().replace(/^\|/, '').replace(/\|$/, '').split('|').map(function (c) { return c.trim(); }); };
+            var isSep = function (s) { return s.indexOf('-') !== -1 && cells(s).every(function (c) { return /^:?-+:?$/.test(c); }); };
+            var isTableStart = function (idx) {
+                return idx + 1 < lines.length && lines[idx].indexOf('|') !== -1 && isSep(lines[idx + 1]);
+            };
+
+            while (i < lines.length) {
+                var line = lines[i];
+
+                if (isBlank(line)) { i++; continue; }
+
+                if (isFence(line)) {
+                    var code = [];
+                    i++;
+                    while (i < lines.length && !/^\s*```/.test(lines[i])) code.push(lines[i++]);
+                    i++; /* skip closing fence */
+                    out.push('<pre><code>' + esc(code.join('\n')) + '\n</code></pre>');
+                    continue;
+                }
+
+                var h = /^\s*(#{1,6})\s+(.+?)\s*#*\s*$/.exec(line);
+                if (h) {
+                    var lvl = h[1].length;
+                    out.push('<h' + lvl + '>' + inline(h[2]) + '</h' + lvl + '>');
+                    i++;
+                    continue;
+                }
+
+                if (isTableStart(i)) {
+                    var head = cells(line);
+                    i += 2;
+                    var rows = [];
+                    while (i < lines.length && !isBlank(lines[i]) && lines[i].indexOf('|') !== -1) rows.push(cells(lines[i++]));
+                    out.push(
+                        '<table><thead><tr>' +
+                        head.map(function (c) { return '<th>' + inline(c) + '</th>'; }).join('') +
+                        '</tr></thead><tbody>' +
+                        rows.map(function (r) { return '<tr>' + r.map(function (c) { return '<td>' + inline(c) + '</td>'; }).join('') + '</tr>'; }).join('') +
+                        '</tbody></table>'
+                    );
+                    continue;
+                }
+
+                if (isHr(line)) { out.push('<hr>'); i++; continue; }
+
+                if (isQuote(line)) {
+                    var q = [];
+                    while (i < lines.length && isQuote(lines[i])) q.push(lines[i++].replace(/^\s*>\s?/, ''));
+                    out.push('<blockquote><p>' + inline(q.join(' ')) + '</p></blockquote>');
+                    continue;
+                }
+
+                if (isUl(line) || isOl(line)) {
+                    var ordered = isOl(line);
+                    var re = ordered ? /^\s*\d+[.)]\s+/ : /^\s*[-*+]\s+/;
+                    var items = [];
+                    while (i < lines.length && re.test(lines[i])) items.push(lines[i++].replace(re, ''));
+                    var tag = ordered ? 'ol' : 'ul';
+                    out.push('<' + tag + '>' + items.map(function (it) { return '<li>' + inline(it) + '</li>'; }).join('') + '</' + tag + '>');
+                    continue;
+                }
+
+                var para = [line];
+                i++;
+                while (
+                    i < lines.length && !isBlank(lines[i]) && !isFence(lines[i]) && !isHeading(lines[i]) &&
+                    !isQuote(lines[i]) && !isUl(lines[i]) && !isOl(lines[i]) && !isHr(lines[i]) && !isTableStart(i)
+                ) para.push(lines[i++]);
+                out.push('<p>' + inline(para.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        /* ------- split rendered html: only H1 starts a new section ----------- */
+
+        function slugify(t) {
+            return t.toLowerCase().trim()
+                .replace(/[^\p{L}\p{N}\s-]/gu, '')
+                .replace(/\s+/g, '-')
+                .replace(/-+/g, '-')
+                .replace(/^-|-$/g, '') || 'section';
+        }
+
+        function splitSections(html) {
+            var tpl = document.createElement('template');
+            tpl.innerHTML = html;
+            var sections = [], cur = null, used = {};
+
+            Array.prototype.slice.call(tpl.content.childNodes).forEach(function (node) {
+                if (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'H1') {
+                    var title = node.textContent.trim();
+                    var id = slugify(title), n = 2, base = id;
+                    while (used[id]) id = base + '-' + (n++);
+                    used[id] = true;
+                    addClasses(node, H[1]);
+                    cur = { title: title, id: id, node: node, nodes: [] };
+                    sections.push(cur);
+                    return;
+                }
+                if (!cur) { cur = { title: '', id: null, node: null, nodes: [] }; sections.push(cur); }
+                cur.nodes.push(node);
+            });
+            return sections;
+        }
+
+        /* ---------------- apply the existing Tailwind look -------------------- */
+
+        function styleNode(el) {
+            switch (el.tagName) {
+                case 'H2': case 'H3': case 'H4': case 'H5': case 'H6':
+                    addClasses(el, H[+el.tagName[1]]); break;
+                case 'P': addClasses(el, C.p); break;
+                case 'UL': addClasses(el, C.ul); break;
+                case 'OL': addClasses(el, C.ol); break;
+                case 'LI': addClasses(el, C.li); break;
+                case 'STRONG': addClasses(el, C.strong); break;
+                case 'BLOCKQUOTE': addClasses(el, C.blockquote); break;
+                case 'A': addClasses(el, C.a); break;
+                case 'HR': addClasses(el, C.hr); break;
+                case 'IMG': addClasses(el, C.img); break;
+                case 'PRE': addClasses(el, C.pre); break;
+                case 'CODE':
+                    if (!el.parentElement || el.parentElement.tagName !== 'PRE') {
+                        C.codeInline.forEach(function (c) { el.classList.add(c); });
+                    }
+                    break;
+                case 'TABLE': {
+                    addClasses(el, C.table);
+                    var wrap = document.createElement('div');
+                    wrap.className = C.tableWrap;
+                    el.parentNode.insertBefore(wrap, el);
+                    wrap.appendChild(el);
+                    break;
+                }
+                case 'THEAD': addClasses(el, C.thead); break;
+                case 'TH': addClasses(el, C.th); break;
+                case 'TD': addClasses(el, C.td); break;
+            }
+            Array.prototype.slice.call(el.children).forEach(styleNode);
+        }
+
+        /* ---------------- render ---------------------------------------------- */
+
+        function setActive(link) {
+            if (!link) return;
+            var root = link.closest('md-docs');
+            if (root) {
+                root.querySelectorAll('[data-docs-link]').forEach(function (a) {
+                    C.active.forEach(function (c) { a.classList.remove(c); });
+                });
+            }
+            C.active.forEach(function (c) { link.classList.add(c); });
+        }
+
+        function render(sections) {
+            var aside = document.createElement('aside');
+            aside.className = C.aside;
+            aside.setAttribute('aria-label', 'Documentation sections');
+
+            var content = document.createElement('div');
+            content.className = C.content;
+
+            sections.forEach(function (s) {
+                if (s.title) {
+                    var a = document.createElement('a');
+                    a.className = C.button;
+                    a.href = '#' + s.id;
+                    a.textContent = s.title;
+                    a.setAttribute('data-docs-link', s.id);
+                    a.addEventListener('click', function () { setActive(a); });
+                    aside.appendChild(a);
+                }
+
+                var card = document.createElement('section');
+                card.className = C.card;
+                if (s.id) {
+                    card.id = s.id;
+                    card.setAttribute('data-docs-section', '');
+                }
+                if (s.node) card.appendChild(s.node);
+                s.nodes.forEach(function (node) {
+                    if (node.nodeType === Node.ELEMENT_NODE) styleNode(node);
+                    card.appendChild(node);
+                });
+                content.appendChild(card);
+            });
+
+            var grid = document.createElement('div');
+            grid.className = C.grid;
+            grid.appendChild(aside);
+            grid.appendChild(content);
+            return grid;
+        }
+
+        function setupSpy(root) {
+            if (!('IntersectionObserver' in window)) return;
+            var links = {};
+            root.querySelectorAll('[data-docs-link]').forEach(function (a) {
+                links[a.getAttribute('data-docs-link')] = a;
+            });
+            var io = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting && links[entry.target.id]) setActive(links[entry.target.id]);
+                });
+            }, { rootMargin: '0px 0px -70% 0px', threshold: 0 });
+            root.querySelectorAll('[data-docs-section]').forEach(function (t) { io.observe(t); });
+        }
+
+        /* ---------------- the component ---------------------------------------- */
+
+        class MdDocs extends HTMLElement {
+            connectedCallback() {
+                var src = this.getAttribute('src') || 'docs.md';
+                this.load(src);
+            }
+
+            async load(src) {
+                this.showLoading();
+                try {
+                    var res = await fetch(src);
+                    if (!res.ok) throw new Error('Could not load "' + src + '" (HTTP ' + res.status + ').');
+                    var parsed = parseFrontMatter(await res.text());
+                    var sections = splitSections(mdToHtml(parsed.body));
+                    this.build(sections, parsed.meta);
+                } catch (err) {
+                    this.fail(err && err.message ? err.message : String(err));
+                }
+            }
+
+            build(sections, meta) {
+                this.textContent = '';
+
+                /* page header from md front matter (title: / description:) */
+                if (meta.title || meta.description) {
+                    var header = document.createElement('header');
+                    header.className = C.header;
+                    var eyebrow = document.createElement('div');
+                    eyebrow.className = C.eyebrow;
+                    eyebrow.textContent = 'Documentation';
+                    header.appendChild(eyebrow);
+                    if (meta.title) {
+                        var h1 = document.createElement('h1');
+                        h1.className = C.title;
+                        h1.textContent = meta.title;
+                        header.appendChild(h1);
+                    }
+                    if (meta.description) {
+                        var p = document.createElement('p');
+                        p.className = C.description;
+                        p.textContent = meta.description;
+                        header.appendChild(p);
+                    }
+                    this.appendChild(header);
+                }
+
+                this.appendChild(render(sections));
+                setupSpy(this);
+
+                /* honor a #hash on load */
+                var hash = decodeURIComponent((location.hash || '').slice(1));
+                var link = hash ? this.querySelector('[data-docs-link="' + hash + '"]') : this.querySelector('[data-docs-link]');
+                if (link) {
+                    setActive(link);
+                    var target = hash && document.getElementById(hash);
+                    if (target) setTimeout(function () { target.scrollIntoView(); }, 0);
+                }
+            }
+
+            showLoading() {
+                this.innerHTML =
+                    '<div class="' + C.content + '" aria-busy="true">' +
+                        '<div class="mt-4 h-40 animate-pulse rounded-xl border border-gray-200 bg-gray-50"></div>' +
+                    '</div>';
+            }
+
+            fail(message) {
+                this.innerHTML =
+                    '<section class="rounded-xl border border-pink-200 bg-pink-50 p-6 text-sm leading-relaxed text-pink-900" role="alert">' +
+                        '<strong class="font-bold">Documentation failed to load.</strong> <span class="text-pink-800"></span>' +
+                    '</section>';
+                this.querySelector('span').textContent = message;
+            }
+        }
+
+        customElements.define('md-docs', MdDocs);
+    })();
+    </script>
+</body>
+</html>

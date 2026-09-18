@@ -121,8 +121,8 @@ class AridKV():
 
 
 if __name__ == "__main__":
-    kv = AridKV()
-    print(kv.readByKey("ahs"))
+    pass
+    
     
   
 
