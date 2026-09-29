@@ -20,7 +20,7 @@ _A lightweight, embeddable, file-based database for Python — no SQL, no server
 
 ---
 
-## 📋 Table of Contents
+##  Table of Contents
 
 - [About](#-about)
 - [Features](#-features)
@@ -31,23 +31,23 @@ _A lightweight, embeddable, file-based database for Python — no SQL, no server
 - [Contributing](#-contributing)
 - [License](#-license)
 
-## 📖 About
+##  About
 
 AridDB is a simple embeddable database and key-value store that persists data
 to the local file system. Instead of writing SQL or running a separate database
 server, you interact with your data through clean, built-in Python functions —
 making it ideal for small projects, prototypes, and local tooling.
 
-## ✨ Features
+##  Features
 
-- 🔌 **Embeddable** — the database lives inside your project; nothing to install or run
-- 📁 **File-based** — data persists as plain files on your local file system
-- 🚫 **No SQL** — store and retrieve data with simple, readable method calls
-- 🔑 **Auto-indexing** — rows receive auto-generated indexes out of the box
-- 🗝️ **Key-value store** — includes a companion `AridKV` class (in development)
-- 🪶 **Lightweight** — a minimal, readable codebase you can fully understand
+-  **Embeddable** — the database lives inside your project; nothing to install or run
+-  **File-based** — data persists as plain files on your local file system
+-  **No SQL** — store and retrieve data with simple, readable method calls
+-  **Auto-indexing** — rows receive auto-generated indexes out of the box
+-  **Key-value store** — includes a companion `AridKV` class (in development)
+-  **Lightweight** — a minimal, readable codebase you can fully understand
 
-## 📦 Installation
+##  Installation
 
 Clone the repository and add the source file to your project:
 
@@ -55,7 +55,7 @@ Clone the repository and add the source file to your project:
 git clone https://github.com/CheefLofter/AridDB.git
 ```
 
-> 📌 A PyPI package is planned for a future release.
+>  A PyPI package is planned for a future release.
 
 ## 🚀 Quick Start
 
@@ -93,7 +93,7 @@ It will also check for existing files and will use them if posible
 | `readRow(index)` | Read a single row by its index | 
 | `deleteRow(index)` | deletes the row at the given index |
 | `dumpDB()` | Dump the contents of the database | 
-| `editRow(data, index, primaryKey)` | Edit an existing row | 
+| `editRow(data, index)` | Edit an existing row | 
 
 
 ### `AridKV` — Key-Value Store
