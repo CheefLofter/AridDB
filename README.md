@@ -5,20 +5,21 @@
 
 
 
-_A lightweight, embeddable, file-based database for Python — no SQL, no server, no setup._
+**(WIP)**A lightweight, embeddable, file-based database Written in Rust — no SQL, no server, 
 
 [![Status](https://img.shields.io/badge/status-WIP-orange.svg)]()
 [![License](https://img.shields.io/github/license/CheefLofter/AridDB.svg)](LICENSE)
-[![Last Commit](https://img.shields.io/github/last-commit/CheefLofter/AridDB.svg)](https://github.com/CheefLofter/AridDB/commits)
 [![Issues](https://img.shields.io/github/issues/CheefLofter/AridDB.svg)](https://github.com/CheefLofter/AridDB/issues)
 [![Repo Size](https://img.shields.io/github/repo-size/CheefLofter/AridDB.svg)]()
-[![Python](https://img.shields.io/badge/python-3.6%2B-blue.svg)](https://www.python.org/)
+[![Rust](https://img.shields.io/badge/rust-1.99.1-blue.svg)](https://blog.rust-lang.org/2026/10/15/Rust-1.99.1/)
 [![Code Style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/CheefLofter/AridDB/pulls)
 
 </div>
 
 ---
+
+**all this from here is for the python prototype version and has not been updated for the rust implementation. py files are at src/py-prototype**s
 
 ##  Table of Contents
 
@@ -111,5 +112,4 @@ It will also check for existing files and will use them if posible
 ## 📄 License
 
 Distributed under the [MIT License](LICENSE). See `LICENSE` for more information.
-
 

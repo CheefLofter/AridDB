@@ -1,6 +1,7 @@
 
 from ast import literal_eval
 import os
+import time
 from collections import deque
 
 class AridDB():
@@ -118,6 +119,12 @@ class AridDB():
 if __name__ == "__main__":
 
     database = AridDB("mydatabase")
-    print(database.addRows([[1, 2, 3], [4, 5, 6], [7, 8, 9]]))
+    with open("garbage_data.txt", "r", encoding="utf-8") as file:
+        rows = [[line.rstrip("\r\n")] for line in file]
+
+    start = time.perf_counter()
+    database.addRows(rows)
+    elapsed = time.perf_counter() - start
+    print(f"Rows added from file in {elapsed:.6f} seconds")
 
     

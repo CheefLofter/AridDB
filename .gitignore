@@ -36,3 +36,13 @@ dist/
 .python-version
 .vscode/
 .idea/
+
+# Added by cargo
+
+/target
+
+# vscode settings
+.vscode/
+
+testing/
+example.txt
