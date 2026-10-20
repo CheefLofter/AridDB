@@ -1,25 +1,24 @@
 
 
-use crate::db::Database;
-use std::fs;
-use std::io;
-use std::time::{Duration, Instant};
 
-mod db;
+use database::{Database, SchemaType, DataValue};
 
-fn add_rows_from_file(db: &Database, path: &str) -> io::Result<Duration> {
-    let contents = fs::read_to_string(path)?;
-    let rows: Vec<Vec<&str>> = contents.lines().map(|line| vec![line]).collect();
+#[macro_use]
+mod database;
 
-    let start = Instant::now();
-    db.add_rows(&rows);
-    Ok(start.elapsed())
-}
+mod storage_engine;
 
-fn main() -> io::Result<()> {
-    let db = Database::new("example".into());
+fn main() {
+    
+    let db = Database::new(
+        "example",
+        vec![
+            SchemaType::Integer,
+            SchemaType::String, 
+            SchemaType::Boolean],
+    );
+    println!("{}", db.push_one(row![1,"dsjal",true]).unwrap())
 
-    let elapsed = add_rows_from_file(&db, "garbage_data.txt")?;
-    println!("Added rows from file in {elapsed:?}");
-    Ok(())
+    
+    
 }
