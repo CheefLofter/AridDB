@@ -92,7 +92,7 @@ let db = Database::new(
 
 ```
 
-Initializing a database or a kvstore will create a .dbsuff/.kvstuff file in the same directory 
+Initializing a database will create a .dbsuff file in the same directory 
 It will also check for existing files and will use them if posible 
 
 
