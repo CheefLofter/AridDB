@@ -5,38 +5,25 @@
 
 
 
-**(WIP)**A lightweight, embeddable, file-based database Written in Rust — no SQL, no server, 
+A lightweight, embeddable, file-based database Written in Rust — no SQL, no server, 
 
 [![Status](https://img.shields.io/badge/status-WIP-orange.svg)]()
 [![License](https://img.shields.io/github/license/CheefLofter/AridDB.svg)](LICENSE)
 [![Issues](https://img.shields.io/github/issues/CheefLofter/AridDB.svg)](https://github.com/CheefLofter/AridDB/issues)
 [![Repo Size](https://img.shields.io/github/repo-size/CheefLofter/AridDB.svg)]()
 [![Rust](https://img.shields.io/badge/rust-1.99.1-blue.svg)](https://blog.rust-lang.org/2026/10/15/Rust-1.99.1/)
-[![Code Style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/CheefLofter/AridDB/pulls)
 
 </div>
 
 ---
 
-**all this from here is for the python prototype version and has not been updated for the rust implementation. py files are at src/py-prototype**s
-
-##  Table of Contents
-
-- [About](#-about)
-- [Features](#-features)
-- [Installation](#-installation)
-- [Quick Start](#-quick-start)
-- [API Reference](#-api-reference)
-- [Roadmap](#-roadmap)
-- [Contributing](#-contributing)
-- [License](#-license)
 
 ##  About
 
-AridDB is a simple embeddable database and key-value store that persists data
+AridDB is a simple embeddable database store that persists data
 to the local file system. Instead of writing SQL or running a separate database
-server, you interact with your data through clean, built-in Python functions —
+server, you interact with your data through clean, built-in functions —
 making it ideal for small projects, prototypes, and local tooling.
 
 ##  Features
@@ -45,37 +32,62 @@ making it ideal for small projects, prototypes, and local tooling.
 -  **File-based** — data persists as plain files on your local file system
 -  **No SQL** — store and retrieve data with simple, readable method calls
 -  **Auto-indexing** — rows receive auto-generated indexes out of the box
--  **Key-value store** — includes a companion `AridKV` class (in development)
 -  **Lightweight** — a minimal, readable codebase you can fully understand
 
-##  Installation
-
-Clone the repository and add the source file to your project:
-
-```bash
-git clone https://github.com/CheefLofter/AridDB.git
-```
-
->  A PyPI package is planned for a future release.
-
-## 🚀 Quick Start
+## Quick Start
 
 
-```python
-from ariddb import AridDB
-#from aridkv import AridKV
+```rust
 
-# Create or open a database
-db = AridDB("database") # can be left blank
-#kv = AridKV("kvstore")
-
-# Add a row — the index is auto-generated
-db.addRow(["Alice",30])
-# kv.addRecord({"name": "Alice", "age": 30})
-
-# Read it back
-row = db.readRow(index)
-print(row)
+// initialization and defining schema
+let db = Database::new(
+        "example",
+        vec![
+            SchemaType::Integer,
+            SchemaType::String, 
+            SchemaType::Boolean],
+    );
+   
+    // push single row
+     match db.push_one(       
+        serde_json::json!([1, "Hello", true])
+    ){
+        Ok(msg) => println!("Push one result: {}", msg),
+        Err(e) => println!("Error: {}", e),
+     }
+     // pushing multiple rows to the db
+     match db.push_many(&[
+        serde_json::json!([2, "World", false]),
+        serde_json::json!([3, "Rust", true])
+    ]){
+        Ok(msg) => println!("Push many result: {}", msg),
+        Err(e) => println!("Error: {}", e),
+    }
+    // geting a single row
+    match db.get_one(1) {
+        Ok(row) => println!("Get one result: {}", row),
+        Err(e) => println!("Error: {}", e),
+    }
+    // geting a range of rows
+    match db.get_many(1, 3) {
+        Ok(rows) => {
+            println!("Get many result:");
+            for row in rows {
+                println!("{}", row);
+            }
+        },
+        Err(e) => println!("Error: {}", e),
+    }
+    // dumping entire db
+    match db.dump() {
+        Ok(rows) => {
+            println!("Dump result:");
+            for row in rows {
+                println!("{}", row);
+            }
+        },
+        Err(e) => println!("Error: {}", e),
+    }
 
 
 ```
@@ -83,33 +95,14 @@ print(row)
 Initializing a database or a kvstore will create a .dbsuff/.kvstuff file in the same directory 
 It will also check for existing files and will use them if posible 
 
-## 📘 API Reference
 
-### `AridDB`
+## Roadmap
 
-| Method | Description |
-|--------|-------------|
-| `addRow(data)` | Add a new row with an auto-generated index |
-| `addRows(data)` | addes multiple rows from an array(lsit) of data |
-| `readRow(index)` | Read a single row by its index | 
-| `deleteRow(index)` | deletes the row at the given index |
-| `dumpDB()` | Dump the contents of the database | 
-| `editRow(data, index)` | Edit an existing row | 
+- add a key value system instead of number indexing
+- add ability to make a schema less db
 
 
-### `AridKV` — Key-Value Store
-
-| Method | Description | 
-|--------|-------------|
-| `addRecord(filename, data)` | Store a key-value pair | 
-| `readRecord(filename, index)` | Retrieve a value by index | 
-| `deleteRecord(filename,index)` | deletes a record at index |
-| `editRecord(filename,index,data)` | edits a record at given index |
-| `dumpRecords()` | dumps full kvstore as a string |
-
-
-
-## 📄 License
+## License
 
 Distributed under the [MIT License](LICENSE). See `LICENSE` for more information.
 
