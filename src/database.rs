@@ -1,65 +1,22 @@
+
+
+#![allow(dead_code)] //for anoying compiler warnings
+
+
 use std::path::Path;
 use std::fs::File;
 use std::io;
 use crate::storage_engine::StorageEngine;
 
-use serde::{Serialize, Deserialize};
 use serde_json::Value;
-
-
-#[derive(Serialize, Deserialize, Debug)]
-struct Container {
-    items: Vec<Value>, // Holds any JSON type
-}
-
-
-
-
 
 #[derive(Debug)]
 pub enum SchemaType {
     Integer,
-    Float,
+   
     String,
     Boolean,
 }
-
-
-#[derive(Debug, Serialize)]
-pub enum DataValue {
-    Int(i32),
-    Float(f64),
-    String(String),
-    Bool(bool),
-   
-}
-
-
-impl From<i32> for DataValue {
-    fn from(value: i32) -> Self {
-        DataValue::Int(value)
-    }
-}
-
-impl From<&str> for DataValue {
-    fn from(value: &str) -> Self {
-        DataValue::String(value.to_string())
-    }
-}
-
-impl From<bool> for DataValue {
-    fn from(value: bool) -> Self {
-        DataValue::Bool(value)
-    }
-}
-
-macro_rules! row {
-    ($($value:expr),* $(,)?) => {
-        vec![$($crate::database::DataValue::from($value)),*]
-    };
-}
-
-
 
 pub struct Database {
     schema: Vec<SchemaType>,
@@ -77,38 +34,31 @@ impl Database {
             database: db_name.to_string(),
         };
 
-         if Path::new(&format!("{}.txt", db_name)).exists() {
+         if Path::new(&format!("{}.dbstf", db_name)).exists() {
             return db;
         }
 
-        File::create(&format!("{}.txt", db_name)).unwrap();
+        File::create(&format!("{}.dbstf", db_name)).unwrap();
         db
 
    }
 
+    fn schema_validator(&self, row: &Value) -> bool {
+        let Some(values) = row.as_array() else {
+            return false;
+        };
 
-    fn make_json_str(self, row: Vec<DataValue>) -> String{
-
-        
-        let json_string = serde_json::to_string(&row).unwrap();
-        println!("String: {}", json_string);
-        json_string
-
-    }
-    
-
-
-    fn schema_validater(&self, row: &Vec<DataValue>) -> bool {
-        if row.len() != self.schema.len() {
+        if values.len() != self.schema.len() {
             return false;
         }
 
-        for (i, value) in row.iter().enumerate() {
-            match (&self.schema[i], value) {
-                (SchemaType::Integer, DataValue::Int(_)) => continue,
-                (SchemaType::Float, DataValue::Float(_)) => continue,
-                (SchemaType::String, DataValue::String(_)) => continue,
-                (SchemaType::Boolean, DataValue::Bool(_)) => continue,
+        for (schema_type, value) in self.schema.iter().zip(values) {
+            match (schema_type, value) {
+                (SchemaType::Integer, Value::Number(number))
+                    if number.is_i64() || number.is_u64() => continue,
+                
+                (SchemaType::String, Value::String(_)) => continue,
+                (SchemaType::Boolean, Value::Bool(_)) => continue,
                 _ => return false,
             }
         }
@@ -116,20 +66,74 @@ impl Database {
         true
     }
 
+    pub fn push_one(&self, row: Value) -> io::Result<String> {
+        if self.schema_validator(&row) {
+            let json_str = serde_json::to_string(&row)
+                .map_err(|e| io::Error::new(io::ErrorKind::InvalidData, e))?;
 
-    pub fn push_one(&self, row: Vec<DataValue>) -> io::Result<String> {
 
-        if self.schema_validater(&row){
-
-            let json_str = serde_json::to_string(&row).unwrap();
             StorageEngine::add_row(&self.database, json_str);
             Ok("success".to_string())
-
-
         } else {
             Err(io::Error::new(io::ErrorKind::InvalidInput, "Invalid schema"))
         }
-
     }
 
+    pub fn get_one(&self, index: u32) -> io::Result<Value> {
+        let row = StorageEngine::read_row(&self.database, index)?;
+        serde_json::from_str(&row)
+            .map_err(|e| io::Error::new(io::ErrorKind::InvalidData, e))
+    }
+
+    pub fn push_many(&self, rows: &[Value]) -> io::Result<String> {
+
+
+        if rows.is_empty() {
+            return Err(io::Error::new(io::ErrorKind::InvalidInput, "No rows provided"));
+        }
+        let mut data_to_str_vec = Vec::new();
+
+        for row in rows {
+            if !self.schema_validator(row) {
+                return Err(io::Error::new(io::ErrorKind::InvalidInput, "Invalid schema"))
+            }
+            
+            for row in rows {
+                let json_str = serde_json::to_string(row)
+                    .map_err(|e| io::Error::new(io::ErrorKind::InvalidData, e))?;
+                data_to_str_vec.push(json_str);
+            }
+
+            
+        }
+        StorageEngine::add_rows(&self.database, data_to_str_vec);
+        return Ok("success".to_string())
+    }
+
+    pub fn get_many(&self, start_index: u32, end_index: u32) -> io::Result<Vec<Value>> {
+        let rows = StorageEngine::read_rows(&self.database, start_index, end_index)?;
+        let mut result = Vec::new();
+
+        for row in rows {
+            let value: Value = serde_json::from_str(&row)
+                .map_err(|e| io::Error::new(io::ErrorKind::InvalidData, e))?;
+            result.push(value);
+        }
+
+        Ok(result)
+    }
+
+
+    pub fn dump(&self) -> io::Result<Vec<Value>> {
+        let rows = StorageEngine::dump_db(&self.database)?;
+        let mut result = Vec::new();
+
+        for row in rows {
+            let value: Value = serde_json::from_str(&row)
+                .map_err(|e| io::Error::new(io::ErrorKind::InvalidData, e))?;
+            result.push(value);
+        }
+
+        Ok(result)
+    }
 }

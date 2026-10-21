@@ -1,5 +1,5 @@
 
-// #![allow(dead_code)] //for anoying compiler warnings
+#![allow(dead_code)] //for anoying compiler warnings
 
 /*
  indexing is based on u32 which means the max number of rows is 4,294,967,295. 
@@ -13,7 +13,7 @@
  
 use std::fs::File;
 use std::io::{self,BufRead, Write};
-use std::path::Path;
+
 use rev_buf_reader::RevBufReader;
 
 
@@ -28,7 +28,7 @@ impl StorageEngine {
    
 
     pub fn indexer(filename: &str) -> io::Result<u32> {
-        let file = match File::open(format!("{}.txt", filename)) {
+        let file = match File::open(format!("{}.dbstf", filename)) {
             Ok(f) => f,
             // Err(e) if e.kind() == io::ErrorKind::NotFound => return Ok(0), // no file yet
             Err(e) => return Err(e),
@@ -50,7 +50,7 @@ impl StorageEngine {
             }
             // no comma or non-numeric index: treat as a bad line and keep going up
         }
-        println!("Indexer called, returning 0");
+        
         Ok(0) // empty file or no valid row found
         
     }
@@ -59,14 +59,14 @@ impl StorageEngine {
     pub fn add_row(filename: &str, row: String) {
         let mut file = File::options()
             .append(true)
-            .open(&format!("{}.txt", filename))
+            .open(&format!("{}.dbstf", filename))
             .unwrap();
 
             let index = StorageEngine::indexer(filename).unwrap();
         writeln!(file, "{},{}",index, row).unwrap();
     }
 
-    pub fn add_rows(filename: &str, rows: &[Vec<&str>]) {
+    pub fn add_rows(filename: &str, rows: Vec<String>) {
         if rows.is_empty() {
             return;
         }
@@ -74,7 +74,7 @@ impl StorageEngine {
 
         let mut file = File::options()
             .append(true)
-            .open(&format!("{}.txt", filename))
+            .open(&format!("{}.dbstf", filename))
             .unwrap();
 
         let mut index = StorageEngine::indexer(filename).unwrap();
@@ -82,7 +82,7 @@ impl StorageEngine {
         let mut writer = io::BufWriter::new(&mut file);
 
         for row in rows {
-            writeln!(writer, "{},{:?}", index, row).unwrap();
+            writeln!(writer, "{},{}", index, row).unwrap();
             index += 1;
         }
 
@@ -92,8 +92,8 @@ impl StorageEngine {
 
     }
 
-    pub fn read_row(filename: &str, index: u32) -> io::Result<Vec<String>> {
-        let file = File::open(format!("{}.txt", filename))?;
+    pub fn read_row(filename: &str, index: u32) -> io::Result<String> {
+        let file = File::open(format!("{}.dbstf", filename))?;
         let reader = io::BufReader::new(file);
 
 
@@ -108,10 +108,7 @@ impl StorageEngine {
                 if let Ok(n) = idx.trim().parse::<u32>() {
                     // Remove the brackets and split by comma
                     if n == index {
-                        let row_str = rest.trim();
-                        let row_str = row_str.trim_start_matches('[').trim_end_matches(']');
-                        let row: Vec<String> = row_str.split(',').map(|s| s.trim().to_string()).collect();
-                        return Ok(row);
+                        return Ok(rest.trim().to_string())
                     }
                 }
             }
@@ -120,8 +117,8 @@ impl StorageEngine {
         Err(io::Error::new(io::ErrorKind::NotFound, "Row not found"))
     }
 
-    pub fn read_rows(filename: &str, start_index: u32, end_index: u32) -> io::Result<Vec<Vec<String>>> {
-        let file = File::open(format!("{}.txt", filename))?;
+    pub fn read_rows(filename: &str, start_index: u32, end_index: u32) -> io::Result<Vec<String>>{
+        let file = File::open(format!("{}.dbstf", filename))?;
         let reader = io::BufReader::new(file);
         let mut rows = Vec::new();
 
@@ -137,8 +134,8 @@ impl StorageEngine {
                     if n >= start_index && n <= end_index {
                         // Remove the brackets and split by comma
                         let row_str = rest.trim();
-                        let row_str = row_str.trim_start_matches('[').trim_end_matches(']');
-                        let row: Vec<String> = row_str.split(',').map(|s| s.trim().to_string()).collect();
+                        
+                        let row: String = row_str.to_string();
                         rows.push(row);
                     }
                 }
@@ -149,5 +146,29 @@ impl StorageEngine {
     }
 
 
+    // ai made function un checked or tested
+    pub fn dump_db(filename: &str) -> io::Result<Vec<String>> {
+        let file = File::open(format!("{}.dbstf", filename))?;
+        let reader = io::BufReader::new(file);
+        let mut rows = Vec::new();
+
+        for line in reader.lines() {
+            let line = line?;
+            let line = line.trim();
+            if line.is_empty() {
+                continue; // skip blank lines
+            }
+
+            if let Some((_idx, rest)) = line.split_once(',') {
+                // Remove the brackets and split by comma
+                let row_str = rest.trim();
+                
+                let row: String = row_str.to_string();
+                rows.push(row);
+            }
+        }
+
+        Ok(rows)
+    }
 
 }
